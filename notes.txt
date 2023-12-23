@@ -1,0 +1,17 @@
+todo: 
+- post create (done) 
+- delete (done)
+- put update (done)
+- relation db (done) 
+- qr code (done)
+- auto get name in field logic (done)
+- stock count logic (done)
+- Peminjaman logic (done)
+- pengembalian logic (done)
+- approval pake create aja, no list
+- pengembalian pake update aja, no list
+- login (done)
+- logout (bug)
+- forbiden some api endpoint
+- zero stock logic
+- 

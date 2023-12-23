@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Base64 Image Display</title>
+</head>
+<body>
+  <div id="imageContainer"></div>
+
+  <script>
+    // Base64 encoded string of the image
+    var base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAjoAAAI6AQAAAAAGM99tAAAFgklEQVR4nO2dTYrjSBCFX4wEXqZu4KNINzN1pL6BdBQfYCC1LJCIWUREKmU3zNBlM9ldLxdFyZY/UhAEkS9+JIqXrOWv13AAgggiiCCCCCKIIIII+lNA4qu3/7CICLD2wDLsEp/19hOZAMi0xo+md+yIIIJeAhpVVTUDqroBYwZEBsDMG+hUbvopMq09gFUEQKeqqnoGvWxHBBH0EtAazncZAJGrqqp+CpBUdcYu+jF0CqRPAdJmPxIJP97yoxH0LUH9w7WM94vK+KPfZPwxAFgFOurey5j3XpchK5bhbyjWN+2IIIJesR4tG8t1g2LdBct162XMAwToFIvELWPGswre3qMRRBAi6AAA7IJlAHReLwoLpzMApA1yu8fREoig/E07IoigF4AWEbEj43i/qNxyp3LLfo9MAOR2d0O3ywkhmrxnRwQR9LWl5+UqifniTlVzV0STooOkLdSUsub2Ho0ggiATXKJ2SW+9hDaCXUSGTrEMu8si4/2ih5eX6R07IoigLy73xUlV5+RSts4ALLoeI5L2KDyF7l1d0mcT1B7Io5E5efjhYrXZeAlE7E9n9+mMTiuTp2UT1CCoirPDIXd6+GK/KW3QOak+hNhu/LRsgloFyQQAWHuIDLtgvItYYD1mmPc+tD4spb7kfTsiiKAvLve52QMMndGp+2d0pnGH0A0c0UjE2RujEYKaBIVh2kVXRSPxZ4N/FiVQnrg5NEFaNkHtgUqc7fGzhc4z4LKIHRTNNbtyYnH2HIdMv2zv0Qj61iAc+RkPp9GVk+FWfXs47pBP/HxJn01QwyBrNbAS1U87GcqE42hZDpS6AeO9h85rf8pLNvtoBH1PUHjlDKC4a9RB9BZSNrri2xEZHWZqCGoUVPxup5XS4VnGUuYHl0V8pVP8wjiboIZB6VNUrZoPwHJV759ZBsBNOZcQ2xok37wjggj60jp8tovVVf48pD/zysfhEZFxn0HVj6A2QadToC3P1Lj0l8tn5QtXSeILWjZBDYKqwNpDZ9VK9YuyqMhL+i0hfgOMswlqE/SsZ6dTHZSl3TMeMzV+eMzUswn6DUBF/TDbvV9UZPBw2ibpLNcN3pyQtjhpvnFHBBH0qyv07O4UbKc4Mh5Ct3+x1foffTZBrYKqnhqr9XuUsi0Xc5RFAVFaUmdvaNkENQaqT5B2Wf1XCkWqSWfdKa2TAVo2QQ2Dlqua+iFTycp458EuOtsEhv6UiETnN79nRwQR9LVV+WKPqetMeiUHAsBRMuJtCkmpZxPUJKjuqSnNvZ6pqY6RdUtvCIMRijMaIahBUF0CVbTr6BurO9u91eAkpBwjdmjZBDUGqnpqtFr5nJrJMZXhKGots/5o2QS1CHqMs39aLaKl9des+Gf/tfdoBH1r0NlnR5mfrRJ2m8adSslIzNRhfTZBzYKetBHvlYmRUWMUQ52qWOs4m5ZNUIugkoOMmWdlClTdOnMM90supFRGzWiEoAZBRf0oCl8RAYvWVw/WORk/42yCmgVVk3TCe+tTDFIKnx6OlmB9NkGtgupuMT2G6ORjAmvcN5efWKxi99GyCWoT9PzOgxhoVnnvh55HDXvm/GyCGgcd7/C1tUgPjHcRnXHM1Nl9nA6w+2uYxrzzPTUENQl6nG8Wpdl1JH2kJNVeYFNEE8bZBLUKqk+GD401pfTP7isCyVPpHy2boPZB1RjWZTjmZ3cqt3sPm7gzl/euVwnL9h+NoO8NGlVVP+Riftx7C9IG/Rjc7mUyJbBE3G/eEUEE/cKKM2NSwF6lvg7QUQGbfmZvYM97r6PuAiT/QpfrZr/VF++IIIJeskLPBuD9jSWdXs2DL2/4CBdeT2VlnE1QeyDRf7/nv6ylvUcjiCCCCCKIIIIIIoig/w30Dxme+Qa5yPfSAAAAAElFTkSuQmCC';
+
+    // Create a new Image object
+    var img = new Image();
+
+    // Set the image source to the Base64 string
+    img.src = 'data:image/png;base64,' + base64Image; // Change the MIME type and format if needed
+
+    // Append the image to the 'imageContainer' div in the HTML body
+    document.getElementById('imageContainer').appendChild(img);
+  </script>
+</body>
+</html>

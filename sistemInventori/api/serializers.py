@@ -5,6 +5,13 @@ class AkunSerializer(serializers.ModelSerializer):
     class Meta:
         model = Akun
         fields = '__all__'
+    
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        instance = self.Meta.model(**validated_data)
+        instance.set_password(password) 
+        instance.save()
+        return instance
 
 class BarangSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,4 +26,4 @@ class PeminjamanSerializer(serializers.ModelSerializer):
 class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
-        fields = '__all__'        
+        fields = '__all__'  
