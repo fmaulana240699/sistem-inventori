@@ -1,11 +1,13 @@
 from django.urls import path
-from .views import UserLogoutView, UserLoginView, ApprovalListCreateView, BarangListCreateView, BarangDeleteView, BarangUpdateView, PeminjamanListCreateView, AkunListCreateView, AkunDeleteView, AkunUpdateView, StockListAPIView, PengembalianListCreateView
+from .views import UserLogoutView, UserLoginView, ApprovalListCreateView, BarangListCreateView, BarangDeleteView, BarangUpdateView, PeminjamanListCreateView, AkunListCreateView, AkunDeleteView, AkunUpdateView, StockListAPIView, PengembalianListCreateView, PeminjamanListAPIView, PeminjamanListPerUserAPIView
 
 urlpatterns = [
     path('barang/', BarangListCreateView.as_view(), name='barang-list-create'),
     path('barang/delete/', BarangDeleteView.as_view(), name='barang-delete'),
     path('barang/<int:pk>/', BarangUpdateView.as_view(), name='barang-update'),
-    path('peminjaman/', PeminjamanListCreateView.as_view(), name='peminjaman-list-create'),
+    path('peminjaman/create', PeminjamanListCreateView.as_view(), name='peminjaman-create'),
+    path('peminjaman/', PeminjamanListAPIView.as_view(), name='peminjaman-list'),
+    path('peminjaman/<int:pk>/', PeminjamanListPerUserAPIView.as_view(), name='peminjaman-list-filter'),
     path('pengembalian/', PengembalianListCreateView.as_view(), name="pengembalian-barang"),
     path('approval/', ApprovalListCreateView.as_view(), name="approval-peminjaman"),
     path('akun/', AkunListCreateView.as_view(), name='akun-list-create'),

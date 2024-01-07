@@ -8,10 +8,22 @@ todo:
 - stock count logic (done)
 - Peminjaman logic (done)
 - pengembalian logic (done)
+- login (done)
+- forbiden some api endpoint (done)
+- return nama instead of id (done)
+- change password (done)
+- details akun per id (done)
+
+- logout (bug)
+- zero stock logic
+- role (done)
+
+
+optional:
 - approval pake create aja, no list
 - pengembalian pake update aja, no list
-- login (done)
-- logout (bug)
-- forbiden some api endpoint
-- zero stock logic
-- 
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyMDE5NjEzNTMzLCJpYXQiOjE3MDQ1MTI3MzMsImp0aSI6ImViZDdkNGE4MTI5YzRkOGY5NmFiNzEyMDEzYmE4MWVmIiwidXNlcl9pZCI6Mn0.5laQ05Yi-9Hd1pmFjcTqSQ7TRS5Mas10xUHcdCAIEDw >> admin
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyMDE5NjEzNjIxLCJpYXQiOjE3MDQ1MTI4MjEsImp0aSI6ImE3MzQzZWEyNDM4MDRlOGVhN2RjODg0MmRlYjcwNTc2IiwidXNlcl9pZCI6MX0.lk4tDRUIst0Rze2vnK37Pkwt8ueA2EnMZV_DyJCCjAA >> karyawan
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyMDE5NjE0MDM1LCJpYXQiOjE3MDQ1MTMyMzUsImp0aSI6IjkyNmZmMzhmMTExMDRjMDE5Y2E4Mzc4NmI1NjI4YTRjIiwidXNlcl9pZCI6M30.ntU0R3ovtiGuhiKMF4c0dXdoQUPudnD_j1mA8lj0mhc >> it support

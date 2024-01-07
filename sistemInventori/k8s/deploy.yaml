@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fajar-uas
+  namespace: core
+  labels:
+    app: fajar-uas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fajar-uas
+  template:
+    metadata:
+      labels:
+        app: fajar-uas
+    spec:
+      containers:
+      - name: fajar-uas
+        image: fmaulana24/bpr-uas:v12
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fajar-uas
+  namespace: core
+spec:
+  selector:
+    app: fajar-uas
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

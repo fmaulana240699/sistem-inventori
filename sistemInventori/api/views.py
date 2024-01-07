@@ -3,20 +3,28 @@ import base64
 from io import BytesIO
 from datetime import datetime
 from .models import Barang, Peminjaman, Akun, Stock
-from .serializers import BarangSerializer, PeminjamanSerializer, AkunSerializer, StockSerializer
+from .serializers import BarangSerializer, PeminjamanSerializer, AkunSerializer, StockSerializer, CreatePeminjamanSerializer
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .custom_permissions import IsAdmin, IsItSupport, IsKaryawan, IsRoleExtend
 from rest_framework import status
-from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken
+from django.contrib.auth.hashers import make_password
+from rest_framework_simplejwt.tokens import OutstandingToken, BlacklistedToken, RefreshToken, AccessToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.forms.models import model_to_dict
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from datetime import timedelta, datetime
+from django.http import JsonResponse
+import json
+from django.core.serializers import serialize
+
 
 
 class BarangListCreateView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport | IsRoleExtend]
 
     queryset = Barang.objects.all()
     serializer_class = BarangSerializer
@@ -59,7 +67,7 @@ class BarangListCreateView(generics.ListCreateAPIView):
 
 class BarangDeleteView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport]
 
     def delete(self, request):
         barang_id = request.data.get('id')
@@ -73,7 +81,7 @@ class BarangDeleteView(APIView):
 
 class BarangUpdateView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport]
 
     def patch(self, request, pk):
         try:
@@ -86,16 +94,39 @@ class BarangUpdateView(APIView):
         except Barang.DoesNotExist:
             return Response({'message': 'Barang tidak ditemukan'}, status=404)        
 
-class PeminjamanListCreateView(generics.ListCreateAPIView):
+class PeminjamanListPerUserAPIView(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport ]
 
     queryset = Peminjaman.objects.all()
     serializer_class = PeminjamanSerializer
 
+    def get(self, request, pk):
+        try:
+            list_peminjaman = Peminjaman.objects.filter(id_akun=pk)
+            serialized_data = serialize("json", list_peminjaman)
+            serialized_data = json.loads(serialized_data)
+            return Response(serialized_data, status=200)
+        except Barang.DoesNotExist:
+            return Response({'message': 'Peminjaman tidak ditemukan'}, status=404)   
+
+class PeminjamanListAPIView(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport | IsKaryawan]
+
+    queryset = Peminjaman.objects.all()
+    serializer_class = PeminjamanSerializer
+
+class PeminjamanListCreateView(generics.ListCreateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport | IsKaryawan]
+
+    queryset = Peminjaman.objects.all()
+    serializer_class = CreatePeminjamanSerializer
+
     def post(self, request):
         data = request.data
-        serializer = PeminjamanSerializer(data=data)
+        serializer = CreatePeminjamanSerializer(data=data)
         if serializer.is_valid():
             validated_data = serializer.validated_data
             tanggal_pengembalian_str = validated_data["tanggal_pengembalian"].strftime('%Y-%m-%d')
@@ -110,7 +141,7 @@ class PeminjamanListCreateView(generics.ListCreateAPIView):
                 
 class ApprovalListCreateView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport]
 
     queryset = Peminjaman.objects.all()
     serializer_class = PeminjamanSerializer
@@ -145,7 +176,7 @@ class ApprovalListCreateView(generics.ListCreateAPIView):
 
 class PengembalianListCreateView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport | IsKaryawan]
 
     queryset = Peminjaman.objects.all()
     serializer_class = PeminjamanSerializer
@@ -173,13 +204,13 @@ class PengembalianListCreateView(generics.ListCreateAPIView):
 
 class AkunListCreateView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]    
+    permission_classes = [IsAuthenticated, IsAdmin]    
     queryset = Akun.objects.all()
     serializer_class = AkunSerializer     
 
 class AkunDeleteView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin]
 
     def delete(self, request):
         akun_id = request.data.get('id')
@@ -193,13 +224,15 @@ class AkunDeleteView(APIView):
 
 class AkunUpdateView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin]
 
     def patch(self, request, pk):
         try:
             akun = Akun.objects.get(pk=pk)
             serializer = AkunSerializer(akun, data=request.data, partial=True)
             if serializer.is_valid():
+                validated_data = serializer.validated_data
+                validated_data["password"] = make_password(request.data["password"])
                 serializer.save()
                 return Response(serializer.data, status=200)
             return Response(serializer.errors, status=400)
@@ -208,7 +241,7 @@ class AkunUpdateView(APIView):
 
 class StockListAPIView(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdmin | IsItSupport]
         
     queryset = Stock.objects.all()
     serializer_class = StockSerializer     
@@ -217,21 +250,26 @@ class UserLoginView(APIView):
     def post(self, request):
         serializer = TokenObtainPairSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        user_id = Akun.objects.get(username=request.data['username'])
+        
 
         return Response({
             'access': str(serializer.validated_data["access"]),
             'refresh': str(serializer.validated_data["refresh"]),
+            'user_data': model_to_dict(user_id)
         }, status=status.HTTP_200_OK)
     
 class UserLogoutView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         try:
-            token = request.headers['Authorization'].split(' ')[1]  # Extract token from request header
-            outstanding_token = OutstandingToken.objects.get(token=token)
-            outstanding_token.blacklist()  # Blacklist the token
+  
+            token = request.data["refresh"]
+            blacklist = RefreshToken(token)
+            blacklist.blacklist()
             return Response({'message': 'Successfully logged out'}, status=status.HTTP_200_OK)
         except Exception as e:
+            print(e)
             return Response({'error': 'Invalid token or logout failed'}, status=status.HTTP_400_BAD_REQUEST)
