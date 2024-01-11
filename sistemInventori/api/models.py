@@ -31,7 +31,7 @@ class Akun(AbstractBaseUser):
     
 
 class Barang(models.Model):
-    nama_barang = models.CharField(max_length=20)
+    nama_barang = models.CharField(max_length=100)
     status_barang = models.CharField(max_length=20)
     qr_code = models.TextField(blank=True, null=True)
     jenis_barang = models.CharField(max_length=20)

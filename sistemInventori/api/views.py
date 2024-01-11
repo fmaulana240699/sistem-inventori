@@ -180,6 +180,16 @@ class PengembalianListCreateView(generics.ListCreateAPIView):
 
     queryset = Peminjaman.objects.all()
     serializer_class = PeminjamanSerializer
+
+    def get(self, request):
+        list_barang = []
+        data = request.data
+        approved = Peminjaman.objects.filter(id_akun=data["id_akun"], status_peminjaman="Dipinjam")
+        serialized_data = PeminjamanSerializer(approved, many=True)
+        for x in serialized_data.data[:]:
+            list_barang.append(x["id_barang"]["nama_barang"])
+            
+        return Response({'message': list_barang}, status=200)
     
     def put(self, request):
         data = request.data
@@ -232,7 +242,8 @@ class AkunUpdateView(APIView):
             serializer = AkunSerializer(akun, data=request.data, partial=True)
             if serializer.is_valid():
                 validated_data = serializer.validated_data
-                validated_data["password"] = make_password(request.data["password"])
+                if validated_data.get("password"):
+                    validated_data["password"] = make_password(request.data["password"])
                 serializer.save()
                 return Response(serializer.data, status=200)
             return Response(serializer.errors, status=400)
