@@ -31,7 +31,20 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyMDE
 
 
 Request For Change (RFC):
-1. Edit akun perlu optional tiap input (password pun). (done)
-2. API Get Data Barang untuk Peminjamnya untuk ditampilin ketika pengembalian barang belum ada, adanya API untuk Admin. (done)
-3. API Post Pinjam barang, ketika masukin durasi peminjaman YYYY-MM-DD pun tetep 5 responsenya. (done)
-4. Ketika Tambah Barang, nama barang gabisa lebih dari 20 karakter (done)
+1. Butuh API Get Detail Barang Spesific pakai id (done)
+2. Sepertinya QR Code masih aneh bentuknya, mungkin bisa generate id aja. Biar ketika di scan keluarnya id barangnya (done)
+3. Di API Get List Barang belum ada nama peminjam (Sepertinya berlaku juga untuk nanti di detail barang) ()
+4. API Get List Barang Yg Dipinjam Untuk Pengembalian masih kurang response keynya (Perlu id barang, durasi, tanggal peminjaman, tanggal pengembalian *ini base on desain) ()
+
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyMDIwNDEyMDg1LCJpYXQiOjE3MDUzMTEyODUsImp0aSI6IjdmODFmOWQxMmM1YzRiYWFhMzc5MDYxNTM1MDhiNmNlIiwidXNlcl9pZCI6Mn0.kA4YPbk8NqkYfFcqvVSviGkQAFQBp3qULuf783zJAj8
+
+
+
+muti
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyMDIwNDEyMTMzLCJpYXQiOjE3MDUzMTEzMzMsImp0aSI6IjBiOWYxZDQzYzJmMTRjYjdiNTYxZmRhYWJiYzcyYmU3IiwidXNlcl9pZCI6MX0.IgseifPldRSngR9x0luGGuTfFouy-wr0iEuk_PrlIEM
+
+
+reza
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyMDIwNDE0NTIyLCJpYXQiOjE3MDUzMTM3MjIsImp0aSI6IjdkY2U4OGM1MjljMDRhNTNhMTNmNDE0Zjc5MDQ0NWY3IiwidXNlcl9pZCI6M30.iXKjSYVgDgWnRXohnjP34py6Uuykr7SSRDkvUAfyDC8

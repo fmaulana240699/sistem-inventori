@@ -33,6 +33,7 @@ class BarangListCreateView(generics.ListCreateAPIView):
         data = request.data
         serializer = BarangSerializer(data=data)
         if serializer.is_valid():
+            obj = serializer.save(qr_code="dummy")
             qr_data = serializer.validated_data
 
             # Generate QR code
@@ -41,7 +42,7 @@ class BarangListCreateView(generics.ListCreateAPIView):
                 box_size=10,
                 border=4
             )
-            qr.add_data(qr_data)
+            qr.add_data(obj.id)
             qr.make(fit=True)
 
             # Get QR code data as a string
@@ -82,6 +83,18 @@ class BarangDeleteView(APIView):
 class BarangUpdateView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdmin | IsItSupport]
+
+    def get(self, request, pk):
+        try:
+            barang = Barang.objects.get(pk=pk)
+            barang = model_to_dict(barang)
+            # test = barang["nama_peminjam"]
+            # serialize = AkunSerializer(test, many=True)
+            # barang["nama_peminjam"] = [data_nama["nama_lengkap"] for data_nama in serialize.data]
+            
+            return Response(barang, status=200)
+        except Barang.DoesNotExist:
+            return Response({'message': 'Barang tidak ditemukan'}, status=404)         
 
     def patch(self, request, pk):
         try:
@@ -181,15 +194,13 @@ class PengembalianListCreateView(generics.ListCreateAPIView):
     queryset = Peminjaman.objects.all()
     serializer_class = PeminjamanSerializer
 
-    def get(self, request):
+    def get(self, request, pk):
         list_barang = []
         data = request.data
-        approved = Peminjaman.objects.filter(id_akun=data["id_akun"], status_peminjaman="Dipinjam")
+        approved = Peminjaman.objects.filter(id_akun=pk, status_peminjaman="Dipinjam")
         serialized_data = PeminjamanSerializer(approved, many=True)
-        for x in serialized_data.data[:]:
-            list_barang.append(x["id_barang"]["nama_barang"])
             
-        return Response({'message': list_barang}, status=200)
+        return Response({'message': serialized_data.data[:]}, status=200)
     
     def put(self, request):
         data = request.data
@@ -203,13 +214,17 @@ class PengembalianListCreateView(generics.ListCreateAPIView):
             barang.status_barang = "Ready"
             barang.save()
 
+            # update nama_peminjam
+
+
             # need to update stock barang
             update_stock = Stock.objects.get(nama_barang=barang.jenis_barang)
             update_stock.jumlah_barang = update_stock.jumlah_barang + 1
             update_stock.save()
 
             return Response({'message': 'Barang berhasil dikembalikan'}, status=204)
-        except:
+        except Exception as e:
+            print(e)
             return Response({'message': 'Error ketika mengembalikan'}, status=500)
 
 class AkunListCreateView(generics.ListCreateAPIView):

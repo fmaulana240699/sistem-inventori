@@ -9,6 +9,7 @@ urlpatterns = [
     path('peminjaman/', PeminjamanListAPIView.as_view(), name='peminjaman-list'),
     path('peminjaman/<int:pk>/', PeminjamanListPerUserAPIView.as_view(), name='peminjaman-list-filter'),
     path('pengembalian/', PengembalianListCreateView.as_view(), name="pengembalian-barang"),
+    path('pengembalian/<int:pk>', PengembalianListCreateView.as_view(), name="get-pengembalian-barang"),
     path('approval/', ApprovalListCreateView.as_view(), name="approval-peminjaman"),
     path('akun/', AkunListCreateView.as_view(), name='akun-list-create'),
     path('akun/delete/', AkunDeleteView.as_view(), name='barang-delete'),

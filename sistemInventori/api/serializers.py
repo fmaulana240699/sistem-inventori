@@ -19,11 +19,6 @@ class AkunNameSerializer(serializers.ModelSerializer):
         model = Akun
         fields = ('nama_lengkap',)
 
-class BarangSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Barang
-        fields = '__all__'
-
 class BarangNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Barang
@@ -45,3 +40,13 @@ class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
         fields = '__all__'  
+
+class BarangSerializer(serializers.ModelSerializer):
+    # current_users = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Barang
+        fields = '__all__'
+    
+    # def get_current_users(self, obj):
+    #     return [user.nama_lengkap for user in obj.current_users(status_peminjaman="Dipinjam")]

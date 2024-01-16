@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: fajar-uas
-        image: fmaulana24/bpr-uas:v13
+        image: fmaulana24/bpr-uas:v16
         ports:
         - containerPort: 8000
 ---

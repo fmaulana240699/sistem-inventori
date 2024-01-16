@@ -36,6 +36,11 @@ class Barang(models.Model):
     qr_code = models.TextField(blank=True, null=True)
     jenis_barang = models.CharField(max_length=20)
     serial_number = models.CharField(max_length=20, unique=True)
+    # nama_peminjam = models.ManyToManyField(Akun, through="Peminjaman")
+    
+    # def current_users(self, status_peminjaman="Dipinjam"):
+    #     return self.nama_peminjam.filter(peminjaman__status_peminjaman=status_peminjaman)
+
 
 class Peminjaman(models.Model):
     tanggal_peminjaman = models.DateField()
